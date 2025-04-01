@@ -39,7 +39,7 @@ const WeatherApp = () => {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:5000/weather?city=${encodeURIComponent(city)}`);
+      const response = await fetch(`http://localhost/weather?city=${encodeURIComponent(city)}`);
       const data = await response.json();
 
       if (response.ok) {
