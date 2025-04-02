@@ -1,27 +1,28 @@
-name: Azure Server
+name: SSH into Azure VM
+
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - master
+    branches: [ main ]
 
 jobs:
-  docker-push:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Step 1: Checkout the code from your GitHub repo
-      - name: Get code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Step 2: List all files (for debugging purposes)
-      - name: List All items in root
-        run: ls -a
-
-      # Step 3: Set up SSH access to Azure VM using a private key
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: SSH into Azure VM and run commands
+        uses: appleboy/ssh-action@master
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Running commands on Azure VM..."
+            # Add your commands here
+            ls -l
+            sudo apt-get update
 
       # Step 4: Clone repository on Azure VM and update it with the latest changes from GitHub
       - name: Clone Repository on Azure VM
