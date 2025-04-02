@@ -53,3 +53,14 @@ jobs:
         sudo systemctl enable docker
         sudo usermod -aG docker $USER
         EOF
+
+    - name: Build frontend
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
+        sudo chown -R $USER:$USER ClimaX/frontend/build
+        sudo chmod -R 755 ClimaX/frontend/build
+        sudo apt install -y nodejs npm
+        cd ClimaX/frontend
+        npm install
+        npm run build
+        EOF
