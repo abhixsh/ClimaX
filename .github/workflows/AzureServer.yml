@@ -2,8 +2,8 @@ name: Azure server deployment
 
 on:
   push:
-    branches:
-      - master
+   # branches:
+   #   - master
 
 jobs:
   WebAppHost:
