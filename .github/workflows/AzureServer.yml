@@ -22,4 +22,13 @@ jobs:
     - name: Test SSH connection
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} "echo 'SSH connection successful!'"
-        
+    
+    - name: Clone Repository on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOS }} << 'EOF'
+        sudo apt install -y git
+        git init
+        git clone https://github.com/abhixsh/ClimaX
+        git pull origin main
+        ls -a
+        EOF
