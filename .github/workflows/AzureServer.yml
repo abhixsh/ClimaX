@@ -2,7 +2,7 @@ name: SSH into Azure VM
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master ]  # Change this if you're using a different branch (e.g., 'main')
 
 jobs:
   deploy:
@@ -22,10 +22,8 @@ jobs:
         with:
           host: ${{ secrets.AZURE_VM_IP }}
           username: ${{ secrets.AZURE_VM_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Ensure this is the correct private key stored in GitHub Secrets
           script: |
             echo "Running commands on Azure VM..."
-            # Add your commands here
             ls -l
             sudo apt-get update
-
