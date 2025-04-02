@@ -1,4 +1,4 @@
-name: Azure server SSH
+name: Azure server deployment
 
 on:
   push:
@@ -42,7 +42,7 @@ jobs:
         ls -a
         EOF
 
-    - name: Install Docker and Docker Compose on EC2
+    - name: Install Docker and Docker Compose on Azure VM
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
         sudo apt update
