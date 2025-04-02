@@ -64,3 +64,11 @@ jobs:
         npm install
         npm run build
         EOF
+
+    - name: Run docker compose in the root directory
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
+        cd ClimaX
+        sudo docker-compose build
+        sudo docker-compose up -d
+        EOF
