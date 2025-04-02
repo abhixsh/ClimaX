@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  ssh:
+  WebAppHost:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,5 +29,15 @@ jobs:
         sudo apt update
         sudo apt install -y git
         git clone https://github.com/abhixsh/ClimaX.git || (cd ClimaX && git pull origin main)
+        ls -a
+        EOF
+
+    - name: Create env file and check files
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
+        cd ClimaX/backend
+        echo "OPENWEATHERMAP_API_KEY=${{ secrets.OPENWEATHERMAP_API_KEY }}" > .env
+        echo "FLASK_ENV=${{ secrets.FLASK_ENV }}" >> .env
+        echo "FLASK_DEBUG=${{ secrets.FLASK_DEBUG }}" >> .env
         ls -a
         EOF
