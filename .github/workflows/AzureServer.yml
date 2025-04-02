@@ -1,0 +1,35 @@
+name: Azure Server
+on: 
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+
+jobs:
+    docker-push:
+        runs-on: ubuntu-latest
+        steps:
+            # Step 1: Checkout the code from your GitHub repo
+            - name: Get code
+              uses: actions/checkout@v3
+
+            # Step 2: List all files (for debugging purposes)
+            - name: List All items in root
+              run: ls -a
+
+            # Step 3: Set up SSH access to Azure VM using a private key
+            - name: Set up SSH
+              uses: webfactory/ssh-agent@v0.5.3
+              with:
+                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                
+            # Step 4: Clone repository on Azure VM and update it with the latest changes from GitHub
+            - name: Clone Repository on Azure VM
+              run: |
+                ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+                sudo apt update
+                sudo apt install -y git
+                git clone https://github.com/abhixsh/ClimaX
+                git pull origin main
+                ls -a
+                EOF
