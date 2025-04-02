@@ -1,9 +1,9 @@
-name: SSH to Azure VM
+name: Azure server SSH
 
 on:
   push:
     branches:
-      - master  
+      - master
 
 jobs:
   ssh:
@@ -22,13 +22,12 @@ jobs:
     - name: Test SSH connection
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} "echo 'SSH connection successful!'"
-    
-    - name: Clone Repository on EC2
+
+    - name: Clone Repository on Azure VM
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOS }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} << 'EOF'
+        sudo apt update
         sudo apt install -y git
-        git init
-        git clone https://github.com/abhixsh/ClimaX
-        git pull origin main
+        git clone https://github.com/abhixsh/ClimaX.git || (cd ClimaX && git pull origin main)
         ls -a
         EOF
