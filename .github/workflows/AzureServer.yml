@@ -29,12 +29,3 @@ jobs:
             ls -l
             sudo apt-get update
 
-      - name: Clone Repository on Azure VM
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          sudo apt update
-          sudo apt install -y git
-          git clone https://github.com/abhixsh/ClimaX
-          git pull origin main
-          ls -a
-          EOF
